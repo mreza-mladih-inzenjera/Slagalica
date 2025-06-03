@@ -1,0 +1,22 @@
+@startuml test14_kor_interfejsa
+
+class Klijent
+hide Klijent members 
+interface I <<interface>>
+hide I members 
+class K
+hide K members 
+
+Klijent .r.> I
+K .l.|> I
+
+'ili
+circle I2
+class Klijent2
+class K2
+Klijent2 -r-(I2
+I2 -r- K2
+
+Klijent -[hidden]d- Klijent2
+
+@enduml 

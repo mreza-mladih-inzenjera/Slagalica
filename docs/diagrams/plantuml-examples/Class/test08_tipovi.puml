@@ -1,0 +1,17 @@
+@startuml test8_tipovi
+
+class Datum <<dataType>>
+hide Datum members
+
+enum boolean <<enumeration>> {
+    true
+    false
+}
+hide boolean methods
+
+class "int\n{vrednosti u opsegu:\n od -2^31 - 1 do 2^31}" as int <<primitive>> {
+    
+}
+hide int members
+
+@enduml

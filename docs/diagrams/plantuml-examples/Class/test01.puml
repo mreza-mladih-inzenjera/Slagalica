@@ -1,0 +1,12 @@
+@startuml test1
+
+class PozdravSvima {
+    +paint()
+}
+class Graphics {
+    +drawString()
+}
+PozdravSvima -left-|> Applet
+PozdravSvima .right.> Graphics
+
+@enduml 

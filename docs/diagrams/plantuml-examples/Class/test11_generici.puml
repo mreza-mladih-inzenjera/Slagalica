@@ -1,0 +1,14 @@
+@startuml test11_generici.puml 
+
+class GenerickiBafer <Element\nBroj : Integer = 10> {
+    +stavi(Element)
+    +uzmi(): Element
+}
+
+Bafer -up-|> GenerickiBafer : <<bind>><Element->Predmet,Broj->100>
+hide Bafer members
+
+'implicitno generisanje GenerickiBafer<Element->Predmet, Broj->100>
+' alt. eksplicitno generisanje Bafer: GenerickiBafer<Element->Predmet, Broj->100>
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml test6_simbolklase
+
+class GeometrijskaFigura {
+    -karakteristicnaTacka
+    --
+    +pomeri()
+    +promeniVelicinu()
+    +crtaj()
+    --responsibilities--
+    -- geometrijska svojstva figura u ravni
+}
+
+note top of GeometrijskaFigura : naziv
+
+note right of GeometrijskaFigura::karakteristicnaTacka
+atributi
+end note
+
+note right of GeometrijskaFigura::pomeri
+operacije
+end note
+
+note right of GeometrijskaFigura::"-- geometrijska svojstva figura u ravni"
+odgovornosti
+end note
+
+@enduml

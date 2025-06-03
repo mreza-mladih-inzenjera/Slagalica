@@ -1,0 +1,19 @@
+@startuml test3
+
+package UnnamedPackage as " " {
+    class PozdravSvima
+}
+hide PozdravSvima members
+
+package java {
+    package applet {}
+    package awt {}
+    package lang {}
+}
+
+UnnamedPackage .r.> applet
+UnnamedPackage .r.> awt
+applet .r.> awt
+awt .r.> lang
+
+@enduml

@@ -1,0 +1,10 @@
+@startuml test
+
+class PozdravSvima {
+    +paint(Graphics g)
+}
+note right of PozdravSvima::paint
+g.drawString("Pozdrav svima!", 10, 10);
+end note
+
+@enduml

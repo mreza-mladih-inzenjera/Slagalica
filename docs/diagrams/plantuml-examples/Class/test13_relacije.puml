@@ -1,0 +1,81 @@
+@startuml test13_relacije
+
+'zavisnost (dependency)
+'asocijacija (association)
+'generalizacija (generalization)
+'realizacija (realization)
+
+
+''''''''''''''''Zavisnost
+class A {
+    +uzmi(B) : C
+}
+
+'for layout
+together {
+    class B
+    class C
+}
+
+A .r.> B 
+note on link #lightblue
+Zavisnost
+end note
+A .r.> C
+
+'for layout
+B -[hidden]d-> C
+
+
+''''''''''''''''Generalizacija
+D -u-|> E
+
+note top of E #lightgreen
+Generalizacija
+end note
+
+A -[hidden]r> E
+
+
+''''''''''''''''Asocijacija
+F - G
+note bottom on link #yellow: Asocijacija
+'ne slusa bottom iz nekog razloga
+(F,G) .d H
+
+E -[hidden]> F
+
+
+''''''''''''''''Realizacija
+together {
+    interface I1 <<interface>>
+    class K1
+}
+I1 <|.r. K1 
+note on link #orange
+Realizacija
+end note
+
+hide K1 members 
+hide I1 members
+
+G -[hidden]r> I1
+
+'ili skraceno
+
+together {
+    circle I2
+    class K2
+}
+I2 <|.r. K2 
+note on link #orange
+Realizacija
+end note
+
+hide K2 members 
+hide I2 members
+
+I1 -[hidden]d-> I2
+
+
+@enduml

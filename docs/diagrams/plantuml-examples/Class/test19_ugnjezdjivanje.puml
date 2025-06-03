@@ -1,0 +1,18 @@
+/'
+class A {
+    class B {
+        // B is defined inside A
+    }
+}
+'/
+
+@startuml ugnjezdjivanje
+
+hide members 
+
+A +-r- B : \t\t
+Lista +-r- Element : \t\t
+
+Lista -[hidden]up- A
+
+@enduml

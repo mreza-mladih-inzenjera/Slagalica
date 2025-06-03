@@ -1,0 +1,31 @@
+/'
+Pravo pristupa preko asocijacije
+ograničava vidljivost (visibility)
+objekata klasa u asocijaciji za spoljašnji svet.
+
+Označava se sa + , #,-, ~ ispred imena uloge odgovarajuće strane relacije
+    
+    + znači da objektima sa te strane mogu da pristupaju svi objekti 
+preko objekta sa druge strane
+
+    - znači da objektima klase sa te strane
+ mogu da pristupaju samo objekti klase sa druge strane
+    
+    # znači da iobjekti klasa izvedenih iz klase
+ sa drugog kraja asocijacije imaju pristup
+
+    ~ znači da i objekti klasa iz istog paketa
+ kao klasa sa drugog kraja asocijacije imaju pristup
+
+
+ Podrazumevan je javni vizibilitet uloge u asocijaciji.
+ '/
+
+@startuml pravo pristupa preko asocijacije
+
+hide members 
+
+GrupaKorisnika "*" o-r- "+korisnik; *" Korisnik : \t\t\t
+Korisnik "-vlasnik; 1" -r- "-kljuc; 1..*" Lozinka : \t\t\t\t\t
+
+@enduml 
