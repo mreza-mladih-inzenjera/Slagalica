@@ -1,0 +1,25 @@
+@startuml class_diagram_backend
+
+package controllers {
+    class UserController {
+
+    }
+}
+
+package models {
+    class User {
+        tip
+    }
+}
+
+package repositories {
+    class UserRepo {
+
+    }
+
+    interface UserRepoInterface {
+        
+    }
+}
+
+@enduml 
