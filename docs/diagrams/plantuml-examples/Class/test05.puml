@@ -1,0 +1,19 @@
+@startuml test5
+
+allowmixing
+
+artifact "Pozdrav.html" as html <<artifact>>
+artifact "Pozdrav.java" as java <<artifact>>
+artifact "Pozdrav.jpg" as jpg <<artifact>>
+artifact "PozdravSvima.class" as classFile <<artifact>>
+
+class "PozdravSvima" as PozdravSvima_class
+hide PozdravSvima_class members
+
+html .d.> jpg
+html .r.> classFile
+classFile .r.> java 
+classFile .u.> PozdravSvima_class : <<manifest>>
+java .u.> PozdravSvima_class : <<manifest>>
+
+@enduml 

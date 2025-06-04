@@ -1,0 +1,13 @@
+@startuml test4
+hide footbox
+actor Korisnik as ": Korisnik"
+actor Browser as ": Browser"
+actor JVM as ": JVM"
+
+Korisnik -> Browser : otvoriHTMLStranu()
+Browser -> JVM : run()
+JVM -> "target : PozdravSvima" : paint()
+"target : PozdravSvima" -> "g : Graphics" : drawString()
+
+
+@enduml

@@ -1,0 +1,19 @@
+@startuml test2
+
+class PozdravSvima {
+    +paint()
+}
+
+PozdravSvima -right-|> Applet
+Applet -right-|> Panel
+Panel -right-|> Container 
+Container -right-|> Component 
+Component -right-|> Object
+
+interface ImageObserver {
+    imageUpdate()
+}
+
+ImageObserver -u- Component
+
+@enduml 

@@ -1,0 +1,24 @@
+@startuml primer_rel
+
+class Prozor {
+    +otvori()
+    +zatvori()
+    +pomeri()
+    +prikazi()
+    +obradiDogadjaj()
+}
+
+Prozor .r.> Dogadjaj 
+hide Dogadjaj members 
+
+"Konzolni prozor" -u-|> Prozor 
+Dijalog -u-|> Prozor 
+hide "Konzolni prozor" members
+hide Dijalog members 
+
+Dijalog -r- Komponenta
+hide Komponenta members
+
+"Konzolni prozor" -[hidden]r> Dijalog
+
+@enduml

@@ -1,7 +1,0 @@
-@startuml test
-
-class Myclass {
-    
-}
-
-@enduml

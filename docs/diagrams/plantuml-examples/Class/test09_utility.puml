@@ -1,0 +1,16 @@
+@startuml test9_utility
+
+class Mathematics <<utility>> {
+    {static} absoluteValue()
+    {static} minValue()
+}
+
+class rootClass as "rootClass\n{root}"
+hide rootClass members 
+
+class leafClass as "leafClass\n{leaf}"
+hide leafClass members 
+
+leafClass -up-|> rootClass 
+
+@enduml 

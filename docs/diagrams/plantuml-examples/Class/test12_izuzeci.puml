@@ -1,0 +1,15 @@
+@startuml test12_izuzeci
+
+class Stek {
+    +stavi(Element) {exception StekPun}
+    +uzmi(): Element {exception StekPrazan}
+}
+exception StekPun <<Exception>>
+exception StekPrazan <<Exception>>
+hide StekPun members 
+hide StekPrazan members
+
+Stek::stavi .r.> StekPun : <<Send>>
+Stek::stavi .r.> StekPrazan : <<Send>>
+
+@enduml

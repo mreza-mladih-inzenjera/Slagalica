@@ -1,0 +1,37 @@
+@startuml ukrasi_asocijacije 
+
+Osoba "1..* {ordered}" -r- "1" Kompanija : > radi za \t\t
+Kompanija "1" *-r- "*" Odeljenje : \t
+
+note "Sadrzanje" as N1
+N1 .d. (Kompanija, Odeljenje)
+
+hide Osoba members
+hide Kompanija members
+hide Odeljenje members
+
+' Agregacija (has-a)
+' Deo u agregaciji moze da bude zajednicki deo vise celina
+
+Celina o-r- Deo 
+Celina -[hidden]u-- Osoba
+hide Celina members
+hide Deo members
+
+note "Agregacija" as N2
+N2 -d- (Celina,Deo)
+
+'Kompozicija (is-a)
+'Celina odgovorna za zivotni vek dela
+' Deo u kompoziciji moze da bude deo samo jedne celine
+
+Celina2 *-r- Deo2
+hide Celina2 members 
+hide Deo2 members
+
+Deo -[hidden]r- Celina2
+
+note "Kompozicija" as N3
+N3 -d- (Celina2, Deo2)
+
+@enduml 

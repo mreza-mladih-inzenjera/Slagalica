@@ -1,0 +1,24 @@
+@startuml test10_attributes
+
+allowmixing
+
+' + [/] broj: int [[multiplikativnost]] [=inic_vr] [{osobine}] 
+' [vidljivost] ime ([lista_parametara]) [: tip_rezultata] [{osobina}]
+class Klasa <<active>> {
+    ~/broj: int[1] = 10 {id, readOnly}
+    usbPorts: USBport[2..*] {ordered, unique}
+    +veciBroj: int[1] = 0
+    --
+    #uvecajBroj(broj, out veciBroj): int {concurrency = sequential}
+    'signali koje aktivna klasa moze da PartitionFontName
+    --receptions--
+    +<<signal>> periferalSpreman()
+}
+
+class Sabirac <<thread>>
+hide Sabirac members 
+
+component Kompresor <<process>>
+'hide Kompresor members
+
+@enduml

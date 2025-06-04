@@ -1,0 +1,8 @@
+@startuml test7_abstract
+
+abstract class AbstractClass {
+    {abstract} atribut
+    {abstract} metoda()
+}
+
+@enduml 

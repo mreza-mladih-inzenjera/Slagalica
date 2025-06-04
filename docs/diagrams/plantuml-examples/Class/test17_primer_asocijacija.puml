@@ -1,0 +1,16 @@
+@startuml primer_asocijacija
+
+hide members
+
+Fakultet "1" *-r-- "1..*" Katedra : > ima\t
+Student "*" -u--o "1..*" Fakultet : > studira\t
+Student "*" -r-- "*" Predmet : > pohadja\t
+Predmet "*" --u-o "1..*" Katedra : < odgovara za\t
+Predmet "-kurs; *" -r-- "-predavac; 1..*" Nastavnik : < predaje\t\t\t
+Nastavnik "-clan; *" ---o "-jedinica; 1" Katedra : > radi pri\t
+Nastavnik "-sef; 1" --- "0..1" Katedra : > upravlja\t
+
+Fakultet -[hidden]d- Student
+Katedra -[hidden]d- Predmet 
+
+@enduml 
