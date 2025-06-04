@@ -1,0 +1,29 @@
+@startuml package_diagram
+
+hide members
+
+note "folder db renamed\nto repositories" as N1
+package com.revizori.slagalica.backend <<model>> {
+    package config {
+        class DB <<configuration>>
+    }
+    package controllers {
+        '
+    }
+    package repositories {
+        '
+    }
+    package models {
+        '
+    }
+
+    config .d.> repositories : provides DataSource
+    controllers -d-> models : <<access>>
+    controllers -d-> repositories : <<access>>
+    repositories -> models : <<access>>
+
+    note top of controllers : Controller
+    note bottom of repositories : Part of model
+    note bottom of models : Model
+}
+@enduml
