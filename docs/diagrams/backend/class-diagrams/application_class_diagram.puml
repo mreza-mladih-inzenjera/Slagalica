@@ -1,0 +1,257 @@
+@startuml Application_Class_Diagram
+
+'========================================
+' User Management
+'========================================
+
+class User <<entity>> {
+    -id: int <<key>>
+    -firstName: String
+    -lastName: String
+    -email: String {unique}
+    -occupation: String
+    -username: String {unique}
+    -password: String
+    -gender: UserGender
+    -dateOfBirth: LocalDate
+    -profilePhoto: String
+    -type: UserType
+}
+class UserController {
+    +getAllUsers(): List<User>
+    +getUserByUsername(username: String): User
+    +login(user: User): User
+    +register(user: User): User
+    +updateUser(user: User): User
+    +deleteUser(username: String)
+}
+class UserService {
+    +getAllUsers(): List<User>
+    +getUserByUsername(username: String): User
+    +login(user: User): User
+    +register(user: User): User
+    +updateUser(user: User): User
+    +deleteUser(username: String)
+}
+class UserRepo {
+    +getAllUsers(): List<User>
+    +getUserByUsername(username: String): User
+    +login(user: User): User
+    +register(user: User): User
+    +updateUser(user: User): User
+    +deleteUser(username: String)
+}
+'UserController -[hidden]r-> GameController : \t\t\t\t
+
+UserController .[thickness=3].> UserService
+UserService -[thickness=3](0-- UserRepo : UserRepoInterface
+UserRepo .[thickness=3].> User
+
+UserController ..> User
+UserService ..> User
+
+'========================================
+' GameSession Management
+'========================================
+
+class GameSession {
+    -bluePlayer: User
+    -redPlayer: User 
+    -slagalicaPoeni: int = 0
+    -mojBrojPoeni: int = 0
+    -spojnicePoeni: int = 0
+    -skockoPoeni: int = 0
+    -asocijacijePoeni: int = 0
+    -spojnice: SpojniceGame 
+    -asocijacije: AsocijacijeGame 
+}
+class GameController {
+
+}
+class GameSessionService {
+
+}
+
+GameController .[thickness=3].> GameSessionService
+
+GameController ..> GameSession
+GameSessionService .[thickness=3].> GameSession
+
+
+
+'========================================
+' DailyGameSession Management
+'========================================
+class DailyGameSession {
+    -player: User
+    -dailyGame: DailyGame 
+}
+
+class DailyGameSessionService {
+}
+
+GameController .[thickness=3].> DailyGameSessionService
+
+GameController ..> DailyGameSession
+DailyGameSessionService .[thickness=3].> DailyGameSession
+
+
+'========================================
+' DailyGame Management
+'========================================
+class DailyGame <<entity>> {
+    -date: LocalDate <<key>>
+    -spojnice: SpojniceGame 
+    -asocijacije: AsocijacijeGame
+}
+
+class DailyGameService {
+}
+
+class DailyGameRepo {
+}
+
+GameController .[thickness=3].> DailyGameService
+DailyGameService -[thickness=3](0-- DailyGameRepo : DailyGameRepoInterface
+DailyGameRepo .[thickness=3].> DailyGame
+
+GameController ..> DailyGame
+DailyGameService ..> DailyGame
+
+'========================================
+' DailyGameStats Management
+'========================================
+class DailyGameStats <<entity>> {
+    -player: User <<key>>
+    -date: LocalDate <<key>>
+    -hasPlayed: boolean
+    -points: int
+}
+
+class DailyGameStatsService {
+}
+
+class DailyGameStatsRepo {
+}
+
+GameController .[thickness=3].> DailyGameStatsService
+DailyGameStatsService -[thickness=3](0-- DailyGameStatsRepo : DailyGameStatsRepoInterface
+DailyGameStatsRepo .[thickness=3].> DailyGameStats
+
+GameController ..> DailyGameStats
+DailyGameStatsService ..> DailyGameStats
+
+
+'========================================
+' MatchStats Management
+'========================================
+class MatchStats <<entity>> {
+    -id: int <<key>>
+    -bluePlayer: User
+    -redPlayer: User
+    -bluePoints: int 
+    -redPoints: int 
+    -outcome: MatchOutcome
+    -date: LocalDate
+}
+
+class MatchStatsService {
+}
+
+class MatchStatsRepo {
+}
+
+GameController .[thickness=3].> MatchStatsService
+MatchStatsService -[thickness=3](0-- MatchStatsRepo : MatchStatsRepoInterface
+MatchStatsRepo .[thickness=3].> MatchStats
+
+GameController ..> MatchStats
+MatchStatsService ..> MatchStats
+
+
+'========================================
+' SpojniceGame Management
+'========================================
+class SpojniceGame <<entity>> {
+    -id: int <<key>>
+    -wordPairs: List<WordPair>
+    --responsibilities--
+    Holds 10 word pairs
+    for one game round
+}
+
+class SpojniceGameService {
+}
+
+class SpojniceGameRepo {
+}
+
+GameController .[thickness=3].> SpojniceGameService
+SpojniceGameService -[thickness=3](0-- SpojniceGameRepo : SpojniceGameRepoInterface
+SpojniceGameRepo .[thickness=3].> SpojniceGame
+
+GameController ..> SpojniceGame
+SpojniceGameService ..> SpojniceGame
+
+
+'========================================
+' AsocijacijeGame Management
+'========================================
+class AsocijacijeGame <<entity>> {
+    -id: int <<key>>
+    -columnA: String[4]
+    -answerA: String 
+    -answerASynonyms: List<String>
+    -columnB: String[4]
+    -answerBSynonyms: List<String>
+    -columnC: String[4]
+    -answerCSynonyms: List<String>
+    -columnD: String[4]
+    -answerDSynonyms: List<String>
+    -finalAnswer: String 
+    -finalAnswerSynonyms: List<String>
+    --responsibilities--
+    Holds all fields and answers
+    for one game round
+}
+
+class AsocijacijeGameService {
+}
+
+class AsocijacijeGameRepo {
+}
+
+GameController .[thickness=3].> AsocijacijeGameService
+AsocijacijeGameService -[thickness=3](0-- AsocijacijeGameRepo : AsocijacijeGameRepoInterface
+AsocijacijeGameRepo .[thickness=3].> AsocijacijeGame
+
+GameController ..> AsocijacijeGame
+AsocijacijeGameService ..> AsocijacijeGame
+
+
+
+'========================================
+' SlagalicaGame Management
+'========================================
+class SlagalicaGame <<entity>> {
+    -word: String <<key>>
+    --responsibilities--
+    Holds the word
+    for one game round
+}
+
+class SlagalicaGameService {
+}
+
+class SlagalicaGameRepo {
+}
+
+GameController .[thickness=3].> SlagalicaGameService
+SlagalicaGameService -[thickness=3](0-- SlagalicaGameRepo : SlagalicaGameRepoInterface
+SlagalicaGameRepo .[thickness=3].> SlagalicaGame
+
+GameController ..> SlagalicaGame
+SlagalicaGameService ..> SlagalicaGame
+
+
+@enduml

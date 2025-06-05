@@ -1,0 +1,123 @@
+@startuml application_class_diagram
+
+package controllers {
+    class UserController {
+        +getAllUsers(): List<User>
+        +getUser(String): User
+        +login(User): User
+    }
+    class GameSessionController {
+
+    }
+    class DailyGameSessionController {
+
+    }
+    class DailyGameController {
+
+    }
+    class MatchStatsController {
+
+    }
+}
+controllers.UserController --> models.User
+controllers.UserController --> services.UserService
+services.UserService -(0-- repositories.UserRepo : UserRepoInterface
+
+package services {
+    class UserService {
+        -allUsers: List<User>
+        +login(User): User
+    }
+    class GameSessionService {
+
+    }
+    class DailyGameSessionService {
+
+    }
+    class DailyGameService {
+
+    }
+    class MatchStatsService {
+
+    }
+    class SpojniceGameService {
+
+    }
+    class AsocijacijeGameService {
+
+    }
+    class SlagalicaGameService {
+
+    }
+}
+
+package repositories {
+    class UserRepo {
+        +login(User): User
+    }
+    class GameSessionRepo {
+
+    }
+    class DailyGameSessionRepo {
+
+    }
+    class DailyGameRepo {
+
+    }
+    class MatchStatsRepo {
+
+    }
+    class SpojniceGameRepo {
+
+    }
+    class AsocijacijeGameRepo {
+
+    }
+    class SlagalicaGameRepo {
+        
+    }
+}
+repositories.UserRepo --> User
+
+package utils {
+
+}
+
+package models {
+    hide members
+
+    class User <<entity>>
+
+    class DailyGameStats <<entity>>
+    DailyGameStats --> User
+
+    class DailyGame <<entity>>
+    DailyGame *-- AsocijacijeGame
+    DailyGame *-- SpojniceGame
+    DailyGame ..> SlagalicaGame
+
+    class DailyGameSession
+    DailyGameSession --> DailyGame 
+    DailyGameSession --> User
+
+    class MatchStats <<entity>>
+    MatchStats --> User
+    MatchStats --> User
+
+    class SlagalicaGame <<entity>>
+
+    class WordPair <<entity>>
+    class SpojniceGame <<entity>>
+    SpojniceGame *-- WordPair
+
+    class AsocijacijeGame <<entity>>
+
+    class GameSession
+    GameSession *-- SpojniceGame
+    GameSession *-- AsocijacijeGame
+    GameSession ..> SlagalicaGame
+    GameSession --> User
+    GameSession --> User
+}
+
+@enduml

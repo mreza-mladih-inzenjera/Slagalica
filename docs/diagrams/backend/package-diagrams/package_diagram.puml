@@ -10,17 +10,27 @@ package com.revizori.slagalica.backend <<model>> {
     package controllers {
         '
     }
+    package services {
+        '
+    }
     package repositories {
         '
     }
     package models {
         '
     }
+    package utils {
+        '
+    }
 
-    config .d.> repositories : provides DataSource
-    controllers -d-> models : <<access>>
-    controllers -d-> repositories : <<access>>
+    config ...> repositories : provides DataSource
+    controllers --> models : <<access>>
+    controllers --> services : <<access>>
+    services --> repositories : <<access>>
     repositories -> models : <<access>>
+    controllers ...> utils : <<use>>
+    services ...> utils : <<use>>
+    repositories ...> utils : <<use>>
 
     note top of controllers : Controller
     note bottom of repositories : Part of model
