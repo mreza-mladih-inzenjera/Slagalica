@@ -1,0 +1,288 @@
+@startuml Application_Class_Diagram
+
+
+'========================================
+' GameSession Management
+'========================================
+
+class GameSession {
+    -lobbyId: long
+    -bluePlayer: User
+    -redPlayer: User 
+    -slagalicaPoeniBlue: int = 0
+    -slagalicaPoeniRed: int = 0
+    -mojBrojPoeniBlue: int = 0
+    -mojBrojPoeniRed: int = 0
+    -spojnicePoeniBlue: int = 0
+    -spojnicePoeniRed: int = 0
+    -skockoPoeniBlue: int = 0
+    -skockoPoeniRed: int = 0
+    -asocijacijePoeniBlue: int = 0
+    -asocijacijePoeniRed: int = 0
+    -spojnice: SpojniceRound 
+    -asocijacije: AsocijacijeRound 
+}
+class GameSessionController {
+    +createGameLobby(user: User)
+    +joinGameLobby(lobbyId: long, user: User): GameSession
+    +playDailyChallenge(user: User)
+    
+}
+class GameSessionService {
+    +createGameLobby(user: User)
+    +joinGameLobby(lobbyId: long, user: User): GameSession
+    +
+}
+
+GameSessionController .[thickness=3].> GameSessionService
+
+GameSessionController ..> GameSession
+GameSessionService .[thickness=3].> GameSession
+
+GameSessionService .> GameContentService
+DailyChallengeSessionService .> GameContentService
+
+'========================================
+' DailyChallengeSession Management
+'========================================
+class DailyChallengeSession {
+    -player: User
+    -dailyChallenge: DailyChallenge 
+}
+
+class DailyChallengeSessionService {
+    +playDailyChallenge(user: User)
+
+}
+
+GameSessionController .[thickness=3].> DailyChallengeSessionService
+
+GameSessionController ..> DailyChallengeSession
+DailyChallengeSessionService .[thickness=3].> DailyChallengeSession
+
+
+'========================================
+' SpojniceRound Management
+'========================================
+class SpojniceRound <<entity>> {
+    -id: int <<key>>
+    -wordPairs: List<WordPair>
+    --responsibilities--
+    Holds 10 word pairs
+    for one game round
+}
+class GameContentController {
+
+}
+class GameContentService {
+    +fetchGameContent()
+    +isValidSlagalicaRoundWord(word: String)
+}
+
+class SpojniceRoundRepo {
+    +fetchRound()
+}
+
+GameContentController .[thickness=3].> GameContentService
+GameContentService -[thickness=3](0-- SpojniceRoundRepo : SpojniceRoundRepoInterface
+SpojniceRoundRepo .[thickness=3].> SpojniceRound
+
+GameContentController ..> SpojniceRound
+GameContentService ..> SpojniceRound
+
+
+'========================================
+' AsocijacijeRound Management
+'========================================
+class AsocijacijeRound <<entity>> {
+    -id: int <<key>>
+    -columnA: String[4]
+    -answerA: String 
+    -answerASynonyms: List<String>
+    -columnB: String[4]
+    -answerBSynonyms: List<String>
+    -columnC: String[4]
+    -answerCSynonyms: List<String>
+    -columnD: String[4]
+    -answerDSynonyms: List<String>
+    -finalAnswer: String 
+    -finalAnswerSynonyms: List<String>
+    --responsibilities--
+    Holds all fields and answers
+    for one game round
+}
+
+class AsocijacijeRoundRepo {
+    +fetchRound()
+}
+
+GameContentService -[thickness=3](0-- AsocijacijeRoundRepo : AsocijacijeRoundRepoInterface
+AsocijacijeRoundRepo .[thickness=3].> AsocijacijeRound
+
+GameContentController ..> AsocijacijeRound
+GameContentService ..> AsocijacijeRound
+
+
+
+'========================================
+' SlagalicaRound Management
+'========================================
+class SlagalicaRound <<entity>> {
+    -word: String <<key>>
+    --responsibilities--
+    Holds the word
+    for one game round
+}
+class SlagalicaRoundRepo {
+    +findWord(word: String)
+}
+
+GameContentService -[thickness=3](0-- SlagalicaRoundRepo : SlagalicaRoundRepoInterface
+SlagalicaRoundRepo .[thickness=3].> SlagalicaRound
+
+GameContentController ..> SlagalicaRound
+GameContentService ..> SlagalicaRound
+
+'========================================
+' DailyChallenge Management
+'========================================
+class DailyChallenge <<entity>> {
+    -date: LocalDate <<key>>
+    -spojnice: SpojniceRound 
+    -asocijacije: AsocijacijeRound
+}
+class GameHistoryController {
+    +getBestContestansLast7Days()
+    +getBestContestansThisMonth()
+}
+class DailyChallengeService {
+}
+
+class DailyChallengeRepo {
+}
+
+GameHistoryController .[thickness=3].> DailyChallengeService
+DailyChallengeService -[thickness=3](0-- DailyChallengeRepo : DailyChallengeRepoInterface
+DailyChallengeRepo .[thickness=3].> DailyChallenge
+
+GameHistoryController ..> DailyChallenge
+DailyChallengeService ..> DailyChallenge
+
+'========================================
+' DailyChallengeStats Management
+'========================================
+class DailyChallengeStats <<entity>> {
+    -player: User <<key>>
+    -date: LocalDate <<key>>
+    -hasPlayed: boolean
+    -points: int
+}
+
+class DailyChallengeStatsService {
+}
+
+class DailyChallengeStatsRepo {
+}
+
+GameHistoryController .[thickness=3].> DailyChallengeStatsService
+DailyChallengeStatsService -[thickness=3](0-- DailyChallengeStatsRepo : DailyChallengeStatsRepoInterface
+DailyChallengeStatsRepo .[thickness=3].> DailyChallengeStats
+
+GameHistoryController ..> DailyChallengeStats
+DailyChallengeStatsService ..> DailyChallengeStats
+
+
+'========================================
+' MatchStats Management
+'========================================
+class MatchStats <<entity>> {
+    -id: int <<key>>
+    -bluePlayer: User
+    -redPlayer: User
+    -bluePoints: int 
+    -redPoints: int 
+    -outcome: MatchOutcome
+    -date: LocalDate
+}
+
+class MatchStatsService {
+    +getBestContestansLast7Days()
+    +getBestContestansThisMonth()
+}
+
+class MatchStatsRepo {
+    +findMatchesInRange(from: LocalDate, to: LocalDate): List<MatchStats>
+}
+
+GameHistoryController .[thickness=3].> MatchStatsService
+MatchStatsService -[thickness=3](0-- MatchStatsRepo : MatchStatsRepoInterface
+MatchStatsRepo .[thickness=3].> MatchStats
+
+GameHistoryController ..> MatchStats
+MatchStatsService ..> MatchStats
+
+
+'========================================
+' User Management
+'========================================
+
+class User <<entity>> {
+    -id: int <<key>>
+    -firstName: String
+    -lastName: String
+    -email: String {unique}
+    -occupation: String
+    -username: String {unique}
+    -password: String <<encrypted>>
+    -gender: UserGender
+    -dateOfBirth: LocalDate
+    -profilePhoto: String
+    -type: UserType
+    -registrationStatus: RegistrationStatus
+}
+class UserController {
+    +getAllUsers(): List<User>
+    +getUserByUsername(username: String): User
+    +login(user: User): User
+    +register(user: User): User
+    +updateUserInfo(user: User): User
+    +deleteUser(username: String): User
+    +changePassword(req: ChangePasswordRequest): User
+    +getPendingRegistrationRequests()
+    +acceptRegistrationRequest()
+    +declineRegistrationRequest()
+}
+class UserService {
+    +getAllUsers(): List<User>
+    +getUserByUsername(username: String): User
+    +login(user: User): User
+    +register(user: User): User
+    +updateUserInfo(user: User): User
+    +deleteUser(username: String): User
+    +changePassword(username: String, oldPassword: String, newPassword: String): User
+    +getPendingRegistrationRequests()
+    +acceptRegistrationRequest()
+    +declineRegistrationRequest()
+}
+class UserRepo {
+    +findAllUsers(): List<User>
+    +findUserByUsername(username: String): User
+    +login(user: User): User
+    +register(user: User): User
+    +updateUser(user: User): User
+    +deleteUser(username: String): User
+    +changePassword(username: String, oldPassword: String, newPassword: String): User
+    +findRegistrationRequests()
+    +updateRegistrationRequestStatus()
+}
+'UserController -[hidden]r-> GameController : \t\t\t\t
+
+UserController .[thickness=3].> UserService
+UserService -[thickness=3](0-- UserRepo : UserRepoInterface
+UserRepo .[thickness=3].> User
+
+UserController ..> User
+UserService ..> User
+
+
+@enduml

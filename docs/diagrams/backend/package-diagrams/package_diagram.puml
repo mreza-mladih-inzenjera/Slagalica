@@ -2,7 +2,7 @@
 
 hide members
 
-note "folder db renamed\nto repositories" as N1
+note "folder db renamed\nto dao" as N1
 package com.revizori.slagalica.backend <<model>> {
     package config {
         class DB <<configuration>>
@@ -10,20 +10,35 @@ package com.revizori.slagalica.backend <<model>> {
     package controllers {
         '
     }
-    package repositories {
+    package services {
+        '
+    }
+    package dao {
         '
     }
     package models {
         '
     }
+    package utils {
+        '
+    }
+    package dto {
 
-    config .d.> repositories : provides DataSource
-    controllers -d-> models : <<access>>
-    controllers -d-> repositories : <<access>>
-    repositories -> models : <<access>>
+    }
+
+    config ...> dao : provides DataSource
+    controllers ..> models : <<access>>
+    controllers ..> services : <<access>>
+    services ..> dao : <<access>>
+    dao .> models : <<access>>
+    controllers ...> utils : <<use>>
+    services ...> utils : <<use>>
+    dao ...> utils : <<use>>
+    controllers ...> dto : <<use>>
 
     note top of controllers : Controller
-    note bottom of repositories : Part of model
+    note bottom of dto : Part of model
+    note bottom of dao : Part of model
     note bottom of models : Model
 }
 @enduml

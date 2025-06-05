@@ -1,0 +1,135 @@
+@startuml domain_class_diagram
+'left to right direction
+
+enum UserType {
+    ADMIN 
+    SUPERVISOR 
+    CONTESTANT
+}
+enum UserGender {
+    MALE 
+    FEMALE
+}
+enum RegistrationStatus {
+    REGISTERED 
+    PENDING
+    DECLINED
+}
+class User <<entity>> {
+    -id: int <<key>>
+    -firstName: String
+    -lastName: String
+    -email: String {unique}
+    -occupation: String
+    -username: String {unique}
+    -password: String <<encrypted>>
+    -gender: UserGender
+    -dateOfBirth: LocalDate
+    -profilePhoto: String
+    -type: UserType
+    -registrationStatus: RegistrationStatus
+}
+User::gender --> UserGender
+User::type --> UserType
+
+class DailyChallengeStats <<entity>> {
+    -player: User <<key>>
+    -date: LocalDate <<key>>
+    -hasPlayed: boolean
+    -points: int
+}
+note "Composite key: (player, date)" as NCompositeKey
+DailyChallengeStats - NCompositeKey
+DailyChallengeStats --> User
+
+class DailyChallenge <<entity>> {
+    -date: LocalDate <<key>>
+    -spojnice: SpojniceGame 
+    -asocijacije: AsocijacijeGame
+}
+DailyChallenge *-- AsocijacijeGame
+DailyChallenge *-- SpojniceGame
+DailyChallenge ..> SlagalicaGame
+
+class DailyChallengeSession {
+    -player: User
+    -dailyChallenge: DailyChallenge 
+}
+DailyChallengeSession --> DailyChallenge 
+DailyChallengeSession --> User
+
+enum MatchOutcome {
+    BLUE_WON
+    DRAW
+    RED_WON
+}
+class MatchStats <<entity>> {
+    -id: int <<key>>
+    -bluePlayer: User
+    -redPlayer: User
+    -bluePoints: int 
+    -redPoints: int 
+    -outcome: MatchOutcome
+    -date: LocalDate
+}
+MatchStats::outcome --> MatchOutcome
+MatchStats --> "-blue" User
+MatchStats --> "-red" User
+
+class SlagalicaGame <<entity>> {
+    -word: String <<key>>
+    --responsibilities--
+    Holds the word
+    for one game round
+}
+
+class WordPair <<entity>> {
+    -id: int <<key>>
+    -word1: String 
+    -word2: String
+}
+class SpojniceGame <<entity>> {
+    -id: int <<key>>
+    -wordPairs: List<WordPair>
+    --responsibilities--
+    Holds 10 word pairs
+    for one game round
+}
+SpojniceGame "1" *-- "10" WordPair
+
+class AsocijacijeGame <<entity>> {
+    -id: int <<key>>
+    -columnA: String[4]
+    -answerA: String 
+    -answerASynonyms: List<String>
+    -columnB: String[4]
+    -answerBSynonyms: List<String>
+    -columnC: String[4]
+    -answerCSynonyms: List<String>
+    -columnD: String[4]
+    -answerDSynonyms: List<String>
+    -finalAnswer: String 
+    -finalAnswerSynonyms: List<String>
+    --responsibilities--
+    Holds all fields and answers
+    for one game round
+}
+
+class GameSession {
+    -bluePlayer: User
+    -redPlayer: User 
+    -slagalicaPoeni: int = 0
+    -mojBrojPoeni: int = 0
+    -spojnicePoeni: int = 0
+    -skockoPoeni: int = 0
+    -asocijacijePoeni: int = 0
+    -spojnice: SpojniceGame 
+    -asocijacije: AsocijacijeGame 
+}
+GameSession *-- SpojniceGame
+GameSession *-- AsocijacijeGame
+GameSession ..> SlagalicaGame
+GameSession --> "-blue" User
+GameSession --> "-red" User
+
+@enduml 
